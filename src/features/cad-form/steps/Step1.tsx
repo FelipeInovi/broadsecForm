@@ -62,7 +62,6 @@ export function Step1() {
 
       <div className="flex flex-col gap-3 justify-center">
         <CadToggle label="Llamante repetido" {...register('esDeLlamadaRepetida')} />
-        <CadToggle label="Línea TTY / Relay" {...register('esTTY')} />
       </div>
 
       {/* ── Ubicación del incidente ── */}
@@ -72,24 +71,12 @@ export function Step1() {
         <CadInput placeholder="Ej: Cra 45 # 23-10" {...register('direccion')} />
       </FieldWrapper>
 
-      <FieldWrapper label="Nombre de calle" error={errors.nombreCalle?.message} required>
-        <CadInput placeholder="Ej: Avenida El Poblado" {...register('nombreCalle')} />
-      </FieldWrapper>
-
-      <FieldWrapper label="Calle transversal / Referencia" error={errors.calleTransversal?.message}>
-        <CadInput placeholder="Ej: frente al parque" {...register('calleTransversal')} />
-      </FieldWrapper>
-
       <FieldWrapper label="Ciudad / Municipio" error={errors.ciudad?.message} required>
         <CadInput placeholder="Ej: Medellín" {...register('ciudad')} />
       </FieldWrapper>
 
       <FieldWrapper label="Piso / Apartamento / Unidad" error={errors.pisoApartamento?.message}>
         <CadInput placeholder="Ej: Apto 301, Piso 3" {...register('pisoApartamento')} />
-      </FieldWrapper>
-
-      <FieldWrapper label="Referencia de mapa / Cuadrícula" error={errors.referenciaMapas?.message}>
-        <CadInput placeholder="Ej: G-14" {...register('referenciaMapas')} />
       </FieldWrapper>
 
       {/* ── Recepción de llamada ── */}
@@ -134,10 +121,6 @@ export function Step1() {
             </option>
           ))}
         </CadSelect>
-      </FieldWrapper>
-
-      <FieldWrapper label="Subtipo de incidente" error={errors.subtipoIncidente?.message}>
-        <CadInput placeholder="Especificar subtipo" {...register('subtipoIncidente')} />
       </FieldWrapper>
 
       <FieldWrapper

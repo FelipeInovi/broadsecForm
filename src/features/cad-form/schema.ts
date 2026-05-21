@@ -9,19 +9,15 @@ const identificacionLlamante = z.object({
   numeroRetorno: z.string().optional(),
   idioma: z.string().default('Español'),
   esDeLlamadaRepetida: z.boolean().default(false),
-  esTTY: z.boolean().default(false),
 })
 
 const ubicacionIncidente = z.object({
   direccion: z.string().min(3, 'Dirección requerida'),
-  nombreCalle: z.string().min(2, 'Calle requerida'),
-  calleTransversal: z.string().optional(),
   ciudad: z.string().min(2, 'Ciudad requerida'),
   coordenadas: z
     .object({ lat: z.number(), lon: z.number() })
     .optional(),
   pisoApartamento: z.string().optional(),
-  referenciaMapas: z.string().optional(),
 })
 
 const recepcionLlamada = z.object({
@@ -32,7 +28,6 @@ const recepcionLlamada = z.object({
   }),
   prioridad: z.number().min(1).max(5),
   tipoIncidente: z.string().min(1, 'Tipo de incidente requerido'),
-  subtipoIncidente: z.string().optional(),
   narrativaQueja: z.string().optional(),
 })
 

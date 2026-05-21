@@ -23,7 +23,6 @@ export function MultiStepForm() {
     defaultValues: {
       idioma: 'Español',
       esDeLlamadaRepetida: false,
-      esTTY: false,
       esMutualAid: false,
       requiereRevisionSupervisor: false,
       tieneArmas: false,
