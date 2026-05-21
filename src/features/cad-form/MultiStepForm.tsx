@@ -1,9 +1,11 @@
+import { useState } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Stepper } from '@/components/form/Stepper'
 import { StepNavigation } from '@/components/form/StepNavigation'
 import { useMultiStepForm } from '@/hooks/useMultiStepForm'
 import { cadFormSchema, paso1Schema, paso2Schema, paso3Schema, type CadFormData } from './schema'
+import { DEMO_POR_PASO } from './data/demoData'
 import { Step1 } from './steps/Step1'
 import { Step2 } from './steps/Step2'
 import { Step3 } from './steps/Step3'
@@ -13,6 +15,7 @@ const STEP_COMPONENTS = [<Step1 />, <Step2 />, <Step3 />]
 
 export function MultiStepForm() {
   const { currentStep, isFirst, isLast, next, back } = useMultiStepForm(3)
+  const [filled, setFilled] = useState<boolean[]>([false, false, false])
 
   const methods = useForm<CadFormData>({
     resolver: zodResolver(cadFormSchema),
@@ -29,6 +32,21 @@ export function MultiStepForm() {
       tieneOrdenCaptura: false,
     },
   })
+
+  const handleFillDemo = () => {
+    const demoData = DEMO_POR_PASO[currentStep]
+    Object.entries(demoData).forEach(([key, value]) => {
+      methods.setValue(key as keyof CadFormData, value as never, {
+        shouldValidate: true,
+        shouldDirty: true,
+      })
+    })
+    setFilled((prev) => {
+      const next = [...prev]
+      next[currentStep] = true
+      return next
+    })
+  }
 
   const handleNext = async () => {
     const stepSchema = STEP_SCHEMAS[currentStep]
@@ -69,10 +87,26 @@ export function MultiStepForm() {
 
           {/* Card principal */}
           <div className="bg-bg-panel border border-border rounded-xl p-6 md:p-8 shadow-[0_0_40px_rgba(0,0,0,0.5)]">
-            <Stepper currentStep={currentStep} />
+            <div className="flex items-start justify-between mb-2">
+              <div className="flex-1">
+                <Stepper currentStep={currentStep} />
+              </div>
+            </div>
+
+            {/* Botón demo */}
+            <div className="flex justify-end mb-6 -mt-4">
+              <button
+                type="button"
+                onClick={handleFillDemo}
+                className="flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-semibold border transition-all duration-200 border-dashed border-text-muted/40 text-text-muted hover:border-accent hover:text-accent hover:bg-accent/5"
+              >
+                <span>⚡</span>
+                {filled[currentStep] ? 'Rellenar demo de nuevo' : `Llenar paso ${currentStep + 1} con datos de prueba`}
+              </button>
+            </div>
 
             <form onSubmit={(e) => e.preventDefault()}>
-              {STEP_COMPONENTS[currentStep]}
+                {STEP_COMPONENTS[currentStep]}
 
               <StepNavigation
                 isFirst={isFirst}
