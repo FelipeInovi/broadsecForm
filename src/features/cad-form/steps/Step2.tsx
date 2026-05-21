@@ -5,11 +5,7 @@ import { CadSelect } from '@/components/form/CadSelect'
 import { CadTextarea } from '@/components/form/CadTextarea'
 import { CadToggle } from '@/components/form/CadToggle'
 import { type CadFormData } from '../schema'
-import {
-  ESTADOS_INCIDENTE,
-  METODOS_DESPACHO,
-  TIPOS_UNIDAD,
-} from '../data/options'
+import { TIPOS_UNIDAD } from '../data/options'
 
 function SectionTitle({ children }: { children: string }) {
   return (
@@ -34,34 +30,15 @@ export function Step2() {
         <CadInput placeholder="Ej: CAD-2026-00123" {...register('numeroCad')} />
       </FieldWrapper>
 
-      <FieldWrapper label="Estado del incidente" error={errors.estadoIncidente?.message} required>
-        <CadSelect {...register('estadoIncidente')}>
-          <option value="">Seleccionar estado</option>
-          {ESTADOS_INCIDENTE.map((e) => (
-            <option key={e.value} value={e.value}>
-              {e.label}
-            </option>
-          ))}
-        </CadSelect>
+      <FieldWrapper label="Agencia" error={errors.agencia?.message} required>
+        <CadInput placeholder="Ej: Policía Metropolitana" {...register('agencia')} />
       </FieldWrapper>
 
-      <FieldWrapper label="Clase / Categoría" error={errors.claseIncidente?.message} required>
-        <CadInput placeholder="Ej: Seguridad ciudadana" {...register('claseIncidente')} />
+      <FieldWrapper label="Zona asignada" error={errors.zona?.message} required>
+        <CadInput placeholder="Ej: Zona Centro" {...register('zona')} />
       </FieldWrapper>
 
-      <FieldWrapper label="Nivel de respuesta" error={errors.nivelRespuesta?.message} required>
-        <CadInput placeholder="Ej: Alpha, Bravo, Charlie" {...register('nivelRespuesta')} />
-      </FieldWrapper>
-
-      <FieldWrapper label="Agencia / Zona asignada" error={errors.agenciaZona?.message} required>
-        <CadInput placeholder="Ej: Zona Centro, Policía M." {...register('agenciaZona')} />
-      </FieldWrapper>
-
-      <FieldWrapper label="Beat / Sector / Distrito" error={errors.sectorDistrito?.message}>
-        <CadInput placeholder="Ej: Sector 4-B" {...register('sectorDistrito')} />
-      </FieldWrapper>
-
-      <div className="flex items-center col-span-full">
+      <div className="flex items-center">
         <CadToggle label="Requiere ayuda mutua (Mutual Aid)" {...register('esMutualAid')} />
       </div>
 
@@ -78,25 +55,6 @@ export function Step2() {
           {TIPOS_UNIDAD.map((t) => (
             <option key={t.value} value={t.value}>
               {t.label}
-            </option>
-          ))}
-        </CadSelect>
-      </FieldWrapper>
-
-      <FieldWrapper label="ID Oficial / Tripulación" error={errors.idOficialTripulacion?.message} required>
-        <CadInput placeholder="Ej: OF-221" {...register('idOficialTripulacion')} />
-      </FieldWrapper>
-
-      <FieldWrapper label="Estado de la unidad" error={errors.estadoUnidad?.message} required>
-        <CadInput placeholder="Ej: Disponible, En ruta" {...register('estadoUnidad')} />
-      </FieldWrapper>
-
-      <FieldWrapper label="Método de despacho" error={errors.metodoDespacho?.message} required>
-        <CadSelect {...register('metodoDespacho')}>
-          <option value="">Seleccionar método</option>
-          {METODOS_DESPACHO.map((m) => (
-            <option key={m.value} value={m.value}>
-              {m.label}
             </option>
           ))}
         </CadSelect>
@@ -125,16 +83,8 @@ export function Step2() {
         <CadInput type="datetime-local" {...register('horaContactoPaciente')} />
       </FieldWrapper>
 
-      <FieldWrapper label="Hora disponible / libre" error={errors.horaDisponible?.message}>
-        <CadInput type="datetime-local" {...register('horaDisponible')} />
-      </FieldWrapper>
-
       <FieldWrapper label="Hora cierre del incidente" error={errors.horaCierreIncidente?.message}>
         <CadInput type="datetime-local" {...register('horaCierreIncidente')} />
-      </FieldWrapper>
-
-      <FieldWrapper label="Código de disposición" error={errors.codigoDisposicion?.message} required>
-        <CadInput placeholder="Ej: D-01, CERRADO-SIN-NOVEDAD" {...register('codigoDisposicion')} />
       </FieldWrapper>
 
       <FieldWrapper label="Número de reporte (RMS)" error={errors.numeroReporte?.message}>
@@ -152,13 +102,6 @@ export function Step2() {
           {...register('narrativaResultado')}
         />
       </FieldWrapper>
-
-      <div className="flex items-center col-span-full">
-        <CadToggle
-          label="Requiere revisión del supervisor"
-          {...register('requiereRevisionSupervisor')}
-        />
-      </div>
     </div>
   )
 }

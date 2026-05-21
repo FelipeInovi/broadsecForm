@@ -24,11 +24,6 @@ export function MultiStepForm() {
       idioma: 'Español',
       esDeLlamadaRepetida: false,
       esMutualAid: false,
-      requiereRevisionSupervisor: false,
-      tieneArmas: false,
-      tieneHazmat: false,
-      tieneAntecedentes: false,
-      tieneOrdenCaptura: false,
     },
   })
 

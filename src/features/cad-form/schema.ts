@@ -39,17 +39,8 @@ export const paso1Schema = identificacionLlamante
 
 const registroIncidente = z.object({
   numeroCad: z.string().min(1, 'Número CAD requerido'),
-  estadoIncidente: z.enum([
-    'activo',
-    'despachado',
-    'en_camino',
-    'en_escena',
-    'cerrado',
-  ]),
-  claseIncidente: z.string().min(1, 'Clase requerida'),
-  nivelRespuesta: z.string().min(1, 'Nivel de respuesta requerido'),
-  agenciaZona: z.string().min(1, 'Agencia o zona requerida'),
-  sectorDistrito: z.string().optional(),
+  agencia: z.string().min(1, 'Agencia requerida'),
+  zona: z.string().min(1, 'Zona requerida'),
   esMutualAid: z.boolean().default(false),
   incidentesRelacionados: z.array(z.string()).optional(),
 })
@@ -59,11 +50,6 @@ const asignacionRecursos = z.object({
   tipoUnidad: z.enum(['patrulla', 'bomberos', 'ems', 'otro'], {
     errorMap: () => ({ message: 'Seleccione tipo de unidad' }),
   }),
-  idOficialTripulacion: z.string().min(1, 'ID oficial requerido'),
-  estadoUnidad: z.string().min(1, 'Estado de unidad requerido'),
-  metodoDespacho: z.enum(['radio', 'mdt'], {
-    errorMap: () => ({ message: 'Seleccione método de despacho' }),
-  }),
   horaDespacho: z.string().min(1, 'Hora de despacho requerida'),
   horaEnCamino: z.string().optional(),
   tiempoEstimadoLlegada: z.string().optional(),
@@ -72,12 +58,9 @@ const asignacionRecursos = z.object({
 const timestampsCierre = z.object({
   horaLlegadaEscena: z.string().optional(),
   horaContactoPaciente: z.string().optional(),
-  horaDisponible: z.string().optional(),
   horaCierreIncidente: z.string().optional(),
-  codigoDisposicion: z.string().min(1, 'Código de disposición requerido'),
   narrativaResultado: z.string().optional(),
   numeroReporte: z.string().optional(),
-  requiereRevisionSupervisor: z.boolean().default(false),
 })
 
 export const paso2Schema = registroIncidente
@@ -86,14 +69,15 @@ export const paso2Schema = registroIncidente
 
 // ─── Paso 3: Información extendida ────────────────────────────────────────
 
+export const involucradoSchema = z.object({
+  tipo: z.enum(['persona', 'animal', 'vehiculo']),
+  valor: z.string().min(1, 'Campo requerido'),
+})
+
+export type Involucrado = z.infer<typeof involucradoSchema>
+
 const partesInvolucradas = z.object({
-  nombreInvolucrado: z.string().optional(),
-  fechaNacimientoEdad: z.string().optional(),
-  placaVehiculo: z.string().optional(),
-  tieneArmas: z.boolean().default(false),
-  tieneHazmat: z.boolean().default(false),
-  tieneAntecedentes: z.boolean().default(false),
-  tieneOrdenCaptura: z.boolean().default(false),
+  involucrados: z.array(involucradoSchema).optional(),
 })
 
 const mediaAuditoria = z.object({

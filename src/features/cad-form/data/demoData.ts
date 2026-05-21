@@ -21,39 +21,29 @@ export const DEMO_PASO1: Partial<CadFormData> = {
 
 export const DEMO_PASO2: Partial<CadFormData> = {
   numeroCad: 'CAD-2026-00841',
-  estadoIncidente: 'despachado',
-  claseIncidente: 'Seguridad vial',
-  nivelRespuesta: 'Alpha',
-  agenciaZona: 'Policía Metropolitana — Zona Centro',
-  sectorDistrito: 'Sector 4-B',
+  agencia: 'Policía Metropolitana',
+  zona: 'Zona Centro',
   esMutualAid: false,
   idUnidad: 'PAT-117',
   tipoUnidad: 'patrulla',
-  idOficialTripulacion: 'OF-334',
-  estadoUnidad: 'En ruta',
-  metodoDespacho: 'radio',
   horaDespacho: '2026-05-21T14:38',
   horaEnCamino: '2026-05-21T14:40',
   tiempoEstimadoLlegada: '2026-05-21T14:50',
   horaLlegadaEscena: '2026-05-21T14:49',
   horaContactoPaciente: '2026-05-21T14:52',
-  horaDisponible: '2026-05-21T15:30',
   horaCierreIncidente: '2026-05-21T15:35',
-  codigoDisposicion: 'D-07',
   narrativaResultado:
     'Unidad llegó a escena. Se asistió a los heridos. Paciente trasladado a Clínica Las Américas. Vía despejada a las 15:20.',
   numeroReporte: 'RMS-2026-0441',
-  requiereRevisionSupervisor: false,
 }
 
 export const DEMO_PASO3: Partial<CadFormData> = {
-  nombreInvolucrado: 'Juan Pablo Rodríguez',
-  fechaNacimientoEdad: '1985-03-22 / 41 años',
-  placaVehiculo: 'HJK-392 — Sedan gris Toyota Corolla',
-  tieneArmas: false,
-  tieneHazmat: false,
-  tieneAntecedentes: false,
-  tieneOrdenCaptura: false,
+  involucrados: [
+    { tipo: 'persona',  valor: 'CC 1020304050' },
+    { tipo: 'persona',  valor: 'CC 87654321' },
+    { tipo: 'vehiculo', valor: 'HJK-392' },
+    { tipo: 'animal',   valor: 'Canino' },
+  ],
   enlaceGrabacion: 'https://storage.broadsec.co/recordings/2026-05-21-14h35.mp3',
   enlaceCamaraEscena: 'https://cctv.medellin.gov.co/cam/G14-2026-05-21',
   notasAseguramiento:

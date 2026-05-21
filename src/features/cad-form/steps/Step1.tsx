@@ -61,7 +61,7 @@ export function Step1() {
       </FieldWrapper>
 
       <div className="flex flex-col gap-3 justify-center">
-        <CadToggle label="Llamante repetido" {...register('esDeLlamadaRepetida')} />
+        <CadToggle label="Llamante involucrado" {...register('esDeLlamadaRepetida')} />
       </div>
 
       {/* ── Ubicación del incidente ── */}
