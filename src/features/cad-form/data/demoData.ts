@@ -34,6 +34,13 @@ export const DEMO_PASO3: Partial<CadFormData> = {
     { tipo: 'vehiculo',  valores: ['HJK-392'] },
     { tipo: 'animal',    valores: ['Canino'] },
   ],
+  lesionados: [
+    { identificacion: 'CC 1020304050', gravedad: 'moderado', infoAdicional: 'Fractura en brazo derecho, traslado a urgencias' },
+    { identificacion: 'CC 87654321',   gravedad: 'leve',     infoAdicional: 'Golpe en rodilla, atendida en escena' },
+  ],
+  fallecidos: [
+    { identificacion: 'CC 55512348', infoAdicional: 'Conductor del vehículo HJK-392, sin signos vitales al arribo' },
+  ],
   notasAseguramiento:
     'Caso documentado correctamente. Sin irregularidades. Supervisado por operador jefe de turno.',
   idDespachador: 'DSP-019',

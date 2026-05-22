@@ -316,22 +316,28 @@ export function Step3() {
                   <button type="button" onClick={() => removeLesionado(idx)} className="text-xs text-text-muted hover:text-red-400 transition-colors">✕</button>
                 </div>
                 <div className="grid grid-cols-2 gap-2">
-                  <CadInput
-                    placeholder="Identificación del Lesionado"
-                    {...register(`lesionados.${idx}.identificacion`)}
-                  />
-                  <CadSelect {...register(`lesionados.${idx}.gravedad`)}>
-                    <option value="">Gravedad</option>
-                    <option value="leve">Leve</option>
-                    <option value="moderado">Moderado</option>
-                    <option value="grave">Grave</option>
-                    <option value="critico">Crítico</option>
-                  </CadSelect>
+                  <FieldWrapper label="Identificación">
+                    <CadInput
+                      placeholder="Ej: CC 123456"
+                      {...register(`lesionados.${idx}.identificacion`)}
+                    />
+                  </FieldWrapper>
+                  <FieldWrapper label="Gravedad">
+                    <CadSelect {...register(`lesionados.${idx}.gravedad`)}>
+                      <option value="">Seleccionar</option>
+                      <option value="leve">Leve</option>
+                      <option value="moderado">Moderado</option>
+                      <option value="grave">Grave</option>
+                      <option value="critico">Crítico</option>
+                    </CadSelect>
+                  </FieldWrapper>
                 </div>
-                <CadInput
-                  placeholder="Info Adicional..."
-                  {...register(`lesionados.${idx}.infoAdicional`)}
-                />
+                <FieldWrapper label="Info adicional">
+                  <CadInput
+                    placeholder="Observaciones..."
+                    {...register(`lesionados.${idx}.infoAdicional`)}
+                  />
+                </FieldWrapper>
               </div>
             ))}
           </div>
@@ -348,14 +354,18 @@ export function Step3() {
                   </p>
                   <button type="button" onClick={() => removeFallecido(idx)} className="text-xs text-text-muted hover:text-red-400 transition-colors">✕</button>
                 </div>
-                <CadInput
-                  placeholder="Identificación del Fallecido"
-                  {...register(`fallecidos.${idx}.identificacion`)}
-                />
-                <CadInput
-                  placeholder="Info Adicional..."
-                  {...register(`fallecidos.${idx}.infoAdicional`)}
-                />
+                <FieldWrapper label="Identificación">
+                  <CadInput
+                    placeholder="Ej: CC 123456"
+                    {...register(`fallecidos.${idx}.identificacion`)}
+                  />
+                </FieldWrapper>
+                <FieldWrapper label="Info adicional">
+                  <CadInput
+                    placeholder="Observaciones..."
+                    {...register(`fallecidos.${idx}.infoAdicional`)}
+                  />
+                </FieldWrapper>
               </div>
             ))}
           </div>
@@ -450,10 +460,6 @@ export function Step3() {
 
         {/* Auditoría */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-          <FieldWrapper label="ID Despachador" error={errors.idDespachador?.message} required>
-            <CadInput placeholder="Ej: DSP-007" {...register('idDespachador')} />
-          </FieldWrapper>
-
           <div className="col-span-full mt-1">
             {!obsAbiertas ? (
               <button
@@ -481,16 +487,6 @@ export function Step3() {
         </div>
       </div>
 
-      {/* ── Aviso final ── */}
-      <div className="p-4 rounded-lg border border-accent/30 bg-accent/5">
-        <p className="text-xs text-accent font-semibold uppercase tracking-wider mb-1">
-          Listo para enviar
-        </p>
-        <p className="text-sm text-text-muted">
-          Revisa la información ingresada en los pasos anteriores antes de enviar el reporte CAD.
-          Los campos marcados con <span className="text-accent">*</span> son obligatorios.
-        </p>
-      </div>
     </div>
   )
 }

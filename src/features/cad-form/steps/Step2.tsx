@@ -78,7 +78,7 @@ export function Step2() {
           { label: 'Tipo de unidad',             value: tipoLabel },
           { label: 'Hora de despacho',           value: formatDateTimeDisplay(horaDespacho) },
           { label: 'Hora de llegada a escena',   value: formatDateTimeDisplay(horaLlegadaEscena) },
-          { label: 'Tiempo est. de llegada',     value: formatDateTimeDisplay(tiempoEstimadoLlegada) },
+          { label: 'Hora de finalización',          value: formatDateTimeDisplay(tiempoEstimadoLlegada) },
         ].map(({ label, value }) => (
           <div key={label} className="rounded-md border border-border/25 bg-bg-base/40 px-3 py-2">
             <p className="text-[10px] uppercase tracking-widest text-text-muted/60 mb-1">{label}</p>
@@ -167,7 +167,7 @@ export function Step2() {
             </FieldWrapper>
 
             <FieldWrapper
-              label="Tiempo estimado de llegada"
+              label="Hora de finalización"
               error={errors.asignacionesAdicionales?.[idx]?.tiempoEstimadoLlegada?.message}
             >
               <CadInput
