@@ -8,7 +8,6 @@ export const DEMO_PASO1: Partial<CadFormData> = {
   ciudad: 'Medellín',
   pisoApartamento: 'Local 3',
   tipoIncidente: 'accidente_transito',
-  canal: 'telefono',
   prioridad: 2,
   notasAdicionales:
     'Ciudadano reporta accidente de tránsito en vía principal con dos vehículos involucrados. Hay al menos una persona herida que solicita atención médica urgente.',

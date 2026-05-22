@@ -20,9 +20,6 @@ const ubicacionIncidente = z.object({
 const recepcionLlamada = z.object({
   fechaHoraRecepcion: z.string().min(1, 'Fecha y hora requeridas'),
   idOperador: z.string().min(1, 'ID operador requerido'),
-  canal: z.enum(['telefono', 'radio', 'app'], {
-    errorMap: () => ({ message: 'Seleccione un canal' }),
-  }),
   prioridad: z.number().min(1).max(5),
   tipoIncidente: z.string().min(1, 'Tipo de incidente requerido'),
   notasAdicionales: z.string().optional(),

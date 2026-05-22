@@ -6,7 +6,7 @@ import { CadSelect } from '@/components/form/CadSelect'
 import { CadTextarea } from '@/components/form/CadTextarea'
 import { CadToggle } from '@/components/form/CadToggle'
 import { type CadFormData } from '../schema'
-import { CANALES, PRIORIDADES, TIPOS_INCIDENTE } from '../data/options'
+import { PRIORIDADES, TIPOS_INCIDENTE } from '../data/options'
 
 function SectionTitle({ children }: { children: string }) {
   return (
@@ -99,20 +99,6 @@ export function Step1() {
             {TIPOS_INCIDENTE.map((t) => (
               <option key={t.value} value={t.value}>
                 {t.label}
-              </option>
-            ))}
-          </CadSelect>
-        </FieldWrapper>
-
-        {/* ── Recepción de llamada ── */}
-        <SectionTitle>Recepción de llamada</SectionTitle>
-
-        <FieldWrapper label="Canal de recepción" error={errors.canal?.message} required>
-          <CadSelect {...register('canal')}>
-            <option value="">Seleccionar canal</option>
-            {CANALES.map((c) => (
-              <option key={c.value} value={c.value}>
-                {c.label}
               </option>
             ))}
           </CadSelect>
