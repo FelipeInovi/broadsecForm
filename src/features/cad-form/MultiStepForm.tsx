@@ -37,7 +37,8 @@ export function MultiStepForm() {
 
   const methods = useForm<CadFormData>({
     resolver: zodResolver(cadFormSchema),
-    mode: 'onTouched',
+    mode: 'onSubmit',
+    reValidateMode: 'onChange',
     defaultValues: {
       // Step 1 — auto-cargados
       fechaHoraRecepcion: nowAsDateTimeLocal(),
@@ -65,7 +66,7 @@ export function MultiStepForm() {
     const demoData = DEMO_POR_PASO[currentStep]
     Object.entries(demoData).forEach(([key, value]) => {
       methods.setValue(key as keyof CadFormData, value as never, {
-        shouldValidate: true,
+        shouldValidate: false,
         shouldDirty: true,
       })
     })

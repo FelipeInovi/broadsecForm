@@ -16,16 +16,6 @@ function SectionTitle({ children }: { children: string }) {
   )
 }
 
-function formatDateTimeDisplay(iso: string): string {
-  if (!iso) return '—'
-  try {
-    const [datePart, timePart] = iso.split('T')
-    const [y, m, d] = datePart.split('-')
-    return `${d}/${m}/${y}  ${timePart}`
-  } catch {
-    return iso
-  }
-}
 
 export function Step1() {
   const {
@@ -36,8 +26,6 @@ export function Step1() {
 
   const [notasAbiertas, setNotasAbiertas] = useState(false)
 
-  const fechaHoraRecepcion = watch('fechaHoraRecepcion')
-  const idOperador = watch('idOperador')
   const notasValue = watch('notasAdicionales')
 
   // Si el demo llena las notas, abrirlas automáticamente
@@ -47,21 +35,6 @@ export function Step1() {
 
   return (
     <>
-      {/* ── Info fija: datos auto-cargados ── */}
-      <div className="inline-flex flex-wrap items-center gap-x-5 gap-y-2 rounded-md border border-border/30 bg-bg-base/50 px-4 py-2.5 mb-5 text-xs text-text-muted">
-        <span className="flex items-center gap-1.5">
-          <span className="text-accent/50">⏱</span>
-          <span className="text-text-muted/60 uppercase tracking-wider text-[10px]">Recepción:</span>
-          <span className="font-mono text-text-primary/70">{formatDateTimeDisplay(fechaHoraRecepcion)}</span>
-        </span>
-        <span className="text-border">·</span>
-        <span className="flex items-center gap-1.5">
-          <span className="text-accent/50">◈</span>
-          <span className="text-text-muted/60 uppercase tracking-wider text-[10px]">Operador:</span>
-          <span className="font-mono text-text-primary/70">{idOperador || '—'}</span>
-        </span>
-      </div>
-
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
         {/* ── Identificación del llamante ── */}
         <SectionTitle>Identificación del llamante</SectionTitle>
