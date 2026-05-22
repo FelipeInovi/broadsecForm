@@ -6,6 +6,7 @@ import { StepNavigation } from '@/components/form/StepNavigation'
 import { useMultiStepForm } from '@/hooks/useMultiStepForm'
 import { cadFormSchema, paso1Schema, paso2Schema, paso3Schema, type CadFormData } from './schema'
 import { DEMO_POR_PASO } from './data/demoData'
+import { RECURSOS_INICIALES } from './data/options'
 import { Step1 } from './steps/Step1'
 import { Step2 } from './steps/Step2'
 import { Step3 } from './steps/Step3'
@@ -53,6 +54,7 @@ export function MultiStepForm() {
       esMutualAid: false,
       lesionados: [],
       fallecidos: [],
+      recursos: RECURSOS_INICIALES,
     },
   })
 

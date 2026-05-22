@@ -93,18 +93,30 @@ const victimasSchema = z.object({
   fallecidos: z.array(fallecidoSchema).optional(),
 })
 
+const TIPOS_RECURSO = ['grabacion', 'camara', 'cctv'] as const
+
+export const recursoSchema = z.object({
+  id: z.string(),
+  tipo: z.enum(TIPOS_RECURSO),
+  label: z.string(),
+})
+
+export type Recurso = z.infer<typeof recursoSchema>
+export type TipoRecurso = typeof TIPOS_RECURSO[number]
+
+const recursosSchema = z.object({
+  recursos: z.array(recursoSchema).optional(),
+})
+
 const mediaAuditoria = z.object({
-  enlaceGrabacion: z.string().url('URL inválida').optional().or(z.literal('')),
-  enlaceCamaraEscena: z
-    .string()
-    .url('URL inválida')
-    .optional()
-    .or(z.literal('')),
   notasAseguramiento: z.string().optional(),
   idDespachador: z.string().min(1, 'ID despachador requerido'),
 })
 
-export const paso3Schema = partesInvolucradas.merge(victimasSchema).merge(mediaAuditoria)
+export const paso3Schema = partesInvolucradas
+  .merge(victimasSchema)
+  .merge(recursosSchema)
+  .merge(mediaAuditoria)
 
 // ─── Schema completo ───────────────────────────────────────────────────────
 

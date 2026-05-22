@@ -34,8 +34,6 @@ export const DEMO_PASO3: Partial<CadFormData> = {
     { tipo: 'vehiculo',  valores: ['HJK-392'] },
     { tipo: 'animal',    valores: ['Canino'] },
   ],
-  enlaceGrabacion: 'https://storage.broadsec.co/recordings/2026-05-21-14h35.mp3',
-  enlaceCamaraEscena: 'https://cctv.medellin.gov.co/cam/G14-2026-05-21',
   notasAseguramiento:
     'Caso documentado correctamente. Sin irregularidades. Supervisado por operador jefe de turno.',
   idDespachador: 'DSP-019',

@@ -1,10 +1,52 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, type ReactNode } from 'react'
 import { useFormContext, useFieldArray } from 'react-hook-form'
 import { FieldWrapper } from '@/components/form/FieldWrapper'
 import { CadInput } from '@/components/form/CadInput'
 import { CadSelect } from '@/components/form/CadSelect'
 import { CadTextarea } from '@/components/form/CadTextarea'
-import { type CadFormData, type TipoInvolucrado } from '../schema'
+import { type CadFormData, type TipoInvolucrado, type TipoRecurso } from '../schema'
+import { RECURSOS_INICIALES } from '../data/options'
+
+const RECURSO_STYLE: Record<TipoRecurso, { bg: string; border: string; color: string; path: ReactNode }> = {
+  grabacion: {
+    bg: 'rgba(30,27,75,0.7)',
+    border: 'rgba(99,102,241,0.4)',
+    color: '#a5b4fc',
+    path: (
+      <>
+        <rect x="9" y="2" width="6" height="11" rx="3" />
+        <path d="M5 10a7 7 0 0 0 14 0" />
+        <line x1="12" y1="17" x2="12" y2="21" />
+        <line x1="8" y1="21" x2="16" y2="21" />
+      </>
+    ),
+  },
+  camara: {
+    bg: 'rgba(5,46,22,0.7)',
+    border: 'rgba(22,163,74,0.4)',
+    color: '#86efac',
+    path: (
+      <>
+        <path d="M23 7l-7 5 7 5V7z" />
+        <rect x="1" y="5" width="15" height="14" rx="2" />
+      </>
+    ),
+  },
+  cctv: {
+    bg: 'rgba(67,20,7,0.7)',
+    border: 'rgba(180,83,9,0.4)',
+    color: '#fcd34d',
+    path: (
+      <>
+        <path d="M2 8h14l4-4" />
+        <path d="M2 8l4 8h6" />
+        <circle cx="10" cy="19" r="2" />
+        <line x1="6" y1="16" x2="6" y2="19" />
+        <line x1="6" y1="19" x2="8" y2="19" />
+      </>
+    ),
+  },
+}
 
 function SectionTitle({ children }: { children: string }) {
   return (
@@ -35,6 +77,7 @@ export function Step3() {
     control,
     register,
     getValues,
+    watch,
     formState: { errors },
   } = useFormContext<CadFormData>()
 
@@ -55,7 +98,16 @@ export function Step3() {
     remove: removeFallecido,
   } = useFieldArray({ control, name: 'fallecidos' })
 
+  const {
+    fields: recursosFields,
+    remove: removeRecurso,
+    replace: replaceRecursos,
+  } = useFieldArray({ control, name: 'recursos' })
+
   const [dropdownOpen, setDropdownOpen] = useState(false)
+  const [obsAbiertas, setObsAbiertas] = useState(false)
+  const obsValue = watch('notasAseguramiento')
+  useEffect(() => { if (obsValue) setObsAbiertas(true) }, [obsValue])
   const dropdownRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -310,34 +362,122 @@ export function Step3() {
         )}
       </div>
 
-      {/* ── Medios y auditoría ── */}
+      {/* ── Medios y recursos ── */}
       <div>
-        <SectionTitle>Medios y auditoría</SectionTitle>
+        <SectionTitle>Medios y recursos</SectionTitle>
 
+        {/* Grupos de recursos — misma fila */}
+        <div className="grid grid-cols-2 gap-4 mb-4">
+          {(
+            [
+              { titulo: 'Grabación / Audio', tipos: ['grabacion', 'camara'] as TipoRecurso[] },
+              { titulo: 'Cámaras CCTV',      tipos: ['cctv']               as TipoRecurso[] },
+            ] as const
+          ).map(({ titulo, tipos }) => {
+            const grupo = recursosFields
+              .map((f, idx) => ({ field: f, idx }))
+              .filter(({ field }) => tipos.includes(field.tipo as TipoRecurso))
+
+            const initialCount = RECURSOS_INICIALES.filter(r => tipos.includes(r.tipo)).length
+            const needsRestore = grupo.length < initialCount
+
+            const restoreGroup = () => {
+              // field.id es generado por RHF, usamos tipo+label como clave única
+              const nonGroupKeys = new Set(
+                recursosFields
+                  .filter(f => !tipos.includes(f.tipo as TipoRecurso))
+                  .map(f => `${f.tipo}|${f.label}`)
+              )
+              const restored = RECURSOS_INICIALES.filter(
+                r => tipos.includes(r.tipo) || nonGroupKeys.has(`${r.tipo}|${r.label}`)
+              )
+              replaceRecursos(restored)
+            }
+
+            return (
+              <div key={titulo}>
+                <div className="flex items-center justify-between mb-2">
+                  <p className="text-xs font-semibold uppercase tracking-widest text-text-muted">
+                    {titulo}
+                  </p>
+                  {needsRestore && (
+                    <button
+                      type="button"
+                      onClick={restoreGroup}
+                      className="flex items-center gap-1 text-[10px] text-text-muted/60 hover:text-accent transition-colors"
+                    >
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3">
+                        <path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 .49-3.5L1 10"/>
+                      </svg>
+                      Restaurar
+                    </button>
+                  )}
+                </div>
+
+                <div className="flex flex-wrap gap-3">
+                  {grupo.map(({ field, idx }) => {
+                    const tipo = field.tipo as TipoRecurso
+                    const style = RECURSO_STYLE[tipo]
+                    return (
+                      <div
+                        key={field.id}
+                        className="relative w-24 h-24 rounded-lg border flex flex-col items-center justify-center gap-1.5 overflow-hidden"
+                        style={{ background: style.bg, borderColor: style.border }}
+                      >
+                        <button
+                          type="button"
+                          onClick={() => removeRecurso(idx)}
+                          className="absolute top-1 right-1 w-4 h-4 flex items-center justify-center rounded-full bg-black/40 text-white/70 hover:text-red-400 text-[10px] transition-colors"
+                        >✕</button>
+                        <svg viewBox="0 0 24 24" fill="none" stroke={style.color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-9 h-9">
+                          {style.path}
+                        </svg>
+                        <p className="text-[9px] text-center leading-tight px-1" style={{ color: style.color }}>
+                          {field.label}
+                        </p>
+                      </div>
+                    )
+                  })}
+
+                  {grupo.length === 0 && (
+                    <p className="text-xs text-text-muted/40 italic self-center">Sin recursos</p>
+                  )}
+                </div>
+              </div>
+            )
+          })}
+        </div>
+
+        {/* Auditoría */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-          <FieldWrapper label="Enlace grabación / audio llamada" error={errors.enlaceGrabacion?.message}>
-            <CadInput type="url" placeholder="https://..." {...register('enlaceGrabacion')} />
-          </FieldWrapper>
-
-          <FieldWrapper label="Enlace cámara corporal / CCTV" error={errors.enlaceCamaraEscena?.message}>
-            <CadInput type="url" placeholder="https://..." {...register('enlaceCamaraEscena')} />
-          </FieldWrapper>
-
           <FieldWrapper label="ID Despachador" error={errors.idDespachador?.message} required>
             <CadInput placeholder="Ej: DSP-007" {...register('idDespachador')} />
           </FieldWrapper>
 
-          <FieldWrapper
-            label="Notas de aseguramiento de calidad"
-            error={errors.notasAseguramiento?.message}
-            className="col-span-full"
-          >
-            <CadTextarea
-              placeholder="Observaciones del supervisor / control de calidad..."
-              rows={4}
-              {...register('notasAseguramiento')}
-            />
-          </FieldWrapper>
+          <div className="col-span-full mt-1">
+            {!obsAbiertas ? (
+              <button
+                type="button"
+                onClick={() => setObsAbiertas(true)}
+                className="flex items-center gap-2 text-sm text-text-muted hover:text-accent transition-colors duration-150 py-1 group"
+              >
+                <span className="flex items-center justify-center w-5 h-5 rounded border border-border/50 text-base leading-none group-hover:border-accent group-hover:text-accent transition-colors">+</span>
+                <span>Agregar observaciones</span>
+              </button>
+            ) : (
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold uppercase tracking-widest text-accent/80">Observaciones</span>
+                  <button type="button" onClick={() => setObsAbiertas(false)} className="text-xs text-text-muted hover:text-accent transition-colors">✕ cerrar</button>
+                </div>
+                <CadTextarea
+                  placeholder="Observaciones del supervisor / control de calidad..."
+                  rows={4}
+                  {...register('notasAseguramiento')}
+                />
+              </div>
+            )}
+          </div>
         </div>
       </div>
 

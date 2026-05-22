@@ -51,6 +51,17 @@ export const IDIOMAS = [
   { value: 'Otro', label: 'Otro / Intérprete' },
 ]
 
+export const RECURSOS_INICIALES = [
+  { id: 'r1', tipo: 'grabacion' as const, label: 'Grabación llamada'  },
+  { id: 'r2', tipo: 'grabacion' as const, label: 'Audio radio'        },
+  { id: 'r3', tipo: 'grabacion' as const, label: 'Grabación backup'   },
+  { id: 'r4', tipo: 'camara'    as const, label: 'Cámara corporal'    },
+  { id: 'r5', tipo: 'camara'    as const, label: 'Dashcam unidad'     },
+  { id: 'r6', tipo: 'cctv'      as const, label: 'CCTV Escena G14'   },
+  { id: 'r7', tipo: 'cctv'      as const, label: 'CCTV Entrada norte' },
+  { id: 'r8', tipo: 'cctv'      as const, label: 'CCTV Vía principal' },
+]
+
 export const PASOS = [
   { numero: 1, titulo: 'Recepción de llamada' },
   { numero: 2, titulo: 'Despacho del incidente' },
