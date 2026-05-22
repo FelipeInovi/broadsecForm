@@ -61,15 +61,20 @@ export const paso2Schema = asignacionRecursos
 
 // ─── Paso 3: Información extendida ────────────────────────────────────────
 
-export const involucradoSchema = z.object({
-  tipo: z.enum(['persona', 'animal', 'vehiculo']),
-  valor: z.string().min(1, 'Campo requerido'),
+const TIPOS_INVOLUCRADO = [
+  'adulto_mayor', 'animal', 'hombre', 'infante', 'mujer', 'motocicleta', 'vehiculo',
+] as const
+
+export const grupoInvolucradoSchema = z.object({
+  tipo: z.enum(TIPOS_INVOLUCRADO),
+  valores: z.array(z.string()),
 })
 
-export type Involucrado = z.infer<typeof involucradoSchema>
+export type GrupoInvolucrado = z.infer<typeof grupoInvolucradoSchema>
+export type TipoInvolucrado = typeof TIPOS_INVOLUCRADO[number]
 
 const partesInvolucradas = z.object({
-  involucrados: z.array(involucradoSchema).optional(),
+  involucrados: z.array(grupoInvolucradoSchema).optional(),
 })
 
 const mediaAuditoria = z.object({

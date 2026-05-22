@@ -29,10 +29,10 @@ export const DEMO_PASO2: Partial<CadFormData> = {
 
 export const DEMO_PASO3: Partial<CadFormData> = {
   involucrados: [
-    { tipo: 'persona',  valor: 'CC 1020304050' },
-    { tipo: 'persona',  valor: 'CC 87654321' },
-    { tipo: 'vehiculo', valor: 'HJK-392' },
-    { tipo: 'animal',   valor: 'Canino' },
+    { tipo: 'hombre',    valores: ['CC 1020304050'] },
+    { tipo: 'mujer',     valores: ['CC 87654321'] },
+    { tipo: 'vehiculo',  valores: ['HJK-392'] },
+    { tipo: 'animal',    valores: ['Canino'] },
   ],
   enlaceGrabacion: 'https://storage.broadsec.co/recordings/2026-05-21-14h35.mp3',
   enlaceCamaraEscena: 'https://cctv.medellin.gov.co/cam/G14-2026-05-21',
