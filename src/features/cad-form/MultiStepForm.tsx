@@ -38,9 +38,18 @@ export function MultiStepForm() {
     resolver: zodResolver(cadFormSchema),
     mode: 'onTouched',
     defaultValues: {
+      // Step 1 — auto-cargados
       fechaHoraRecepcion: nowAsDateTimeLocal(),
       idOperador: 'OPR-042',
       esDeLlamadaRepetida: false,
+      // Step 2 — auto-cargados del sistema padre
+      agencia: 'Policía Metropolitana',
+      idUnidad: 'PAT-117',
+      tipoUnidad: 'patrulla',
+      horaDespacho: nowAsDateTimeLocal(),
+      horaLlegadaEscena: '2026-05-22T10:49',
+      tiempoEstimadoLlegada: '2026-05-22T10:45',
+      asignacionesAdicionales: [],
       esMutualAid: false,
     },
   })

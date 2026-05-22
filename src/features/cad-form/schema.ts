@@ -31,35 +31,33 @@ export const paso1Schema = identificacionLlamante
 
 // ─── Paso 2: Despacho del incidente ───────────────────────────────────────
 
-const registroIncidente = z.object({
-  numeroCad: z.string().min(1, 'Número CAD requerido'),
+export const asignacionAdicionalSchema = z.object({
   agencia: z.string().min(1, 'Agencia requerida'),
-  zona: z.string().min(1, 'Zona requerida'),
-  esMutualAid: z.boolean().default(false),
-  incidentesRelacionados: z.array(z.string()).optional(),
-})
-
-const asignacionRecursos = z.object({
   idUnidad: z.string().min(1, 'ID de unidad requerido'),
   tipoUnidad: z.enum(['patrulla', 'bomberos', 'ems', 'otro'], {
     errorMap: () => ({ message: 'Seleccione tipo de unidad' }),
   }),
   horaDespacho: z.string().min(1, 'Hora de despacho requerida'),
-  horaEnCamino: z.string().optional(),
+  horaLlegadaEscena: z.string().optional(),
   tiempoEstimadoLlegada: z.string().optional(),
 })
 
-const timestampsCierre = z.object({
+export type AsignacionAdicional = z.infer<typeof asignacionAdicionalSchema>
+
+const asignacionRecursos = z.object({
+  agencia: z.string().min(1, 'Agencia requerida'),
+  idUnidad: z.string().min(1, 'ID de unidad requerido'),
+  tipoUnidad: z.enum(['patrulla', 'bomberos', 'ems', 'otro'], {
+    errorMap: () => ({ message: 'Seleccione tipo de unidad' }),
+  }),
+  horaDespacho: z.string().min(1, 'Hora de despacho requerida'),
   horaLlegadaEscena: z.string().optional(),
-  horaContactoPaciente: z.string().optional(),
-  horaCierreIncidente: z.string().optional(),
-  narrativaResultado: z.string().optional(),
-  numeroReporte: z.string().optional(),
+  tiempoEstimadoLlegada: z.string().optional(),
+  asignacionesAdicionales: z.array(asignacionAdicionalSchema).optional(),
+  notasDespacho: z.string().optional(),
 })
 
-export const paso2Schema = registroIncidente
-  .merge(asignacionRecursos)
-  .merge(timestampsCierre)
+export const paso2Schema = asignacionRecursos
 
 // ─── Paso 3: Información extendida ────────────────────────────────────────
 

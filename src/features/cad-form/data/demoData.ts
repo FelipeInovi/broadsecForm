@@ -14,21 +14,17 @@ export const DEMO_PASO1: Partial<CadFormData> = {
 }
 
 export const DEMO_PASO2: Partial<CadFormData> = {
-  numeroCad: 'CAD-2026-00841',
-  agencia: 'Policía Metropolitana',
-  zona: 'Zona Centro',
-  esMutualAid: false,
-  idUnidad: 'PAT-117',
-  tipoUnidad: 'patrulla',
-  horaDespacho: '2026-05-21T14:38',
-  horaEnCamino: '2026-05-21T14:40',
-  tiempoEstimadoLlegada: '2026-05-21T14:50',
-  horaLlegadaEscena: '2026-05-21T14:49',
-  horaContactoPaciente: '2026-05-21T14:52',
-  horaCierreIncidente: '2026-05-21T15:35',
-  narrativaResultado:
-    'Unidad llegó a escena. Se asistió a los heridos. Paciente trasladado a Clínica Las Américas. Vía despejada a las 15:20.',
-  numeroReporte: 'RMS-2026-0441',
+  notasDespacho: 'Unidad llegó a escena. Se asistió a los heridos. Paciente trasladado a Clínica Las Américas.',
+  asignacionesAdicionales: [
+    {
+      agencia: 'Cuerpo de Bomberos',
+      idUnidad: 'BOM-003',
+      tipoUnidad: 'bomberos',
+      horaDespacho: '2026-05-21T14:42',
+      horaLlegadaEscena: '2026-05-21T14:55',
+      tiempoEstimadoLlegada: '2026-05-21T14:58',
+    },
+  ],
 }
 
 export const DEMO_PASO3: Partial<CadFormData> = {
