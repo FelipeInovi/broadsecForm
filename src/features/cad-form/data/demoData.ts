@@ -1,21 +1,16 @@
 import { type CadFormData } from '../schema'
 
 export const DEMO_PASO1: Partial<CadFormData> = {
-  telefono: '+57 300 123 4567',
-  ubicacionAuto: 'Cra 45 # 23-10, Medellín',
   nombreLlamante: 'Carlos Andrés Mejía',
-  numeroRetorno: '+57 311 987 6543',
-  idioma: 'Español',
+  telefono: '+57 300 123 4567',
   esDeLlamadaRepetida: false,
   direccion: 'Cra 45 # 23-10',
   ciudad: 'Medellín',
   pisoApartamento: 'Local 3',
-  fechaHoraRecepcion: '2026-05-21T14:35',
-  idOperador: 'OPR-042',
+  tipoIncidente: 'accidente_transito',
   canal: 'telefono',
   prioridad: 2,
-  tipoIncidente: 'accidente_transito',
-  narrativaQueja:
+  notasAdicionales:
     'Ciudadano reporta accidente de tránsito en vía principal con dos vehículos involucrados. Hay al menos una persona herida que solicita atención médica urgente.',
 }
 

@@ -3,11 +3,8 @@ import { z } from 'zod'
 // ─── Paso 1: Recepción de llamada ──────────────────────────────────────────
 
 const identificacionLlamante = z.object({
-  telefono: z.string().min(7, 'Ingrese un número válido'),
-  ubicacionAuto: z.string().optional(),
   nombreLlamante: z.string().min(2, 'Nombre requerido'),
-  numeroRetorno: z.string().optional(),
-  idioma: z.string().default('Español'),
+  telefono: z.string().min(7, 'Ingrese un número válido'),
   esDeLlamadaRepetida: z.boolean().default(false),
 })
 
@@ -28,7 +25,7 @@ const recepcionLlamada = z.object({
   }),
   prioridad: z.number().min(1).max(5),
   tipoIncidente: z.string().min(1, 'Tipo de incidente requerido'),
-  narrativaQueja: z.string().optional(),
+  notasAdicionales: z.string().optional(),
 })
 
 export const paso1Schema = identificacionLlamante

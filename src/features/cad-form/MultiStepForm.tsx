@@ -13,6 +13,23 @@ import { Step3 } from './steps/Step3'
 const STEP_SCHEMAS = [paso1Schema, paso2Schema, paso3Schema]
 const STEP_COMPONENTS = [<Step1 />, <Step2 />, <Step3 />]
 
+function nowAsDateTimeLocal(): string {
+  const d = new Date()
+  const pad = (n: number) => String(n).padStart(2, '0')
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`
+}
+
+function formatDateTimeDisplay(iso: string): string {
+  if (!iso) return '—'
+  try {
+    const [datePart, timePart] = iso.split('T')
+    const [y, m, day] = datePart.split('-')
+    return `${day}/${m}/${y}  ${timePart}`
+  } catch {
+    return iso
+  }
+}
+
 export function MultiStepForm() {
   const { currentStep, isFirst, isLast, next, back } = useMultiStepForm(3)
   const [filled, setFilled] = useState<boolean[]>([false, false, false])
@@ -21,11 +38,15 @@ export function MultiStepForm() {
     resolver: zodResolver(cadFormSchema),
     mode: 'onTouched',
     defaultValues: {
-      idioma: 'Español',
+      fechaHoraRecepcion: nowAsDateTimeLocal(),
+      idOperador: 'OPR-042',
       esDeLlamadaRepetida: false,
       esMutualAid: false,
     },
   })
+
+  const fechaHoraRecepcion = methods.watch('fechaHoraRecepcion')
+  const idOperador = methods.watch('idOperador')
 
   const handleFillDemo = () => {
     const demoData = DEMO_POR_PASO[currentStep]
@@ -67,15 +88,28 @@ export function MultiStepForm() {
       <div className="min-h-screen bg-bg-base flex items-start justify-center px-4 py-10">
         <div className="w-full max-w-3xl">
           {/* Header */}
-          <div className="mb-8 flex items-center gap-3">
-            <div className="w-1 h-8 bg-accent rounded-full shadow-[0_0_8px_rgba(34,211,238,0.6)]" />
-            <div>
-              <p className="text-xs text-text-muted uppercase tracking-widest font-semibold">
-                Sistema CAD
-              </p>
-              <h1 className="text-xl font-bold text-text-primary leading-none">
-                Nuevo reporte de incidente
-              </h1>
+          <div className="mb-6 flex items-start justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="w-1 h-8 bg-accent rounded-full shadow-[0_0_8px_rgba(34,211,238,0.6)]" />
+              <div>
+                <p className="text-xs text-text-muted uppercase tracking-widest font-semibold">
+                  Sistema CAD
+                </p>
+                <h1 className="text-xl font-bold text-text-primary leading-none">
+                  Nuevo reporte de incidente
+                </h1>
+              </div>
+            </div>
+            {/* Strip informativo: datos auto-cargados */}
+            <div className="flex flex-col items-end gap-0.5 text-[11px] text-text-muted/70 font-mono">
+              <span className="flex items-center gap-1.5">
+                <span className="text-accent/40 text-[10px] uppercase tracking-wider not-italic font-sans">recepción</span>
+                {formatDateTimeDisplay(fechaHoraRecepcion)}
+              </span>
+              <span className="flex items-center gap-1.5">
+                <span className="text-accent/40 text-[10px] uppercase tracking-wider not-italic font-sans">operador</span>
+                {idOperador || '—'}
+              </span>
             </div>
           </div>
 
