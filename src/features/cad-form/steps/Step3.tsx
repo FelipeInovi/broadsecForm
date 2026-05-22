@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import { useFormContext, useFieldArray } from 'react-hook-form'
 import { FieldWrapper } from '@/components/form/FieldWrapper'
 import { CadInput } from '@/components/form/CadInput'
+import { CadSelect } from '@/components/form/CadSelect'
 import { CadTextarea } from '@/components/form/CadTextarea'
 import { type CadFormData, type TipoInvolucrado } from '../schema'
 
@@ -41,6 +42,18 @@ export function Step3() {
     control,
     name: 'involucrados',
   })
+
+  const {
+    fields: lesionadosFields,
+    append: appendLesionado,
+    remove: removeLesionado,
+  } = useFieldArray({ control, name: 'lesionados' })
+
+  const {
+    fields: fallecidosFields,
+    append: appendFallecido,
+    remove: removeFallecido,
+  } = useFieldArray({ control, name: 'fallecidos' })
 
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
@@ -145,8 +158,7 @@ export function Step3() {
                     <button
                       type="button"
                       onClick={() => adjustCount(fieldIdx, -1)}
-                      disabled={valores.length <= 1}
-                      className="w-6 h-6 rounded-full border border-accent/60 bg-accent/10 flex items-center justify-center text-base leading-none font-light text-accent hover:bg-accent hover:text-bg-base disabled:opacity-25 disabled:cursor-not-allowed transition-all duration-150"
+                      className="w-6 h-6 rounded-full border border-accent/60 bg-accent/10 flex items-center justify-center text-base leading-none font-light text-accent hover:bg-accent hover:text-bg-base transition-all duration-150"
                     >
                       −
                     </button>
@@ -187,6 +199,115 @@ export function Step3() {
             )
           })}
         </div>
+      </div>
+
+      {/* ── Lesionados y Fallecidos ── */}
+      <div>
+        <SectionTitle>Lesionados y fallecidos</SectionTitle>
+
+        {/* Contadores */}
+        <div className="flex justify-center gap-6 mb-4">
+          {/* Lesionados */}
+          <div className="inline-flex flex-col items-center rounded-lg border border-border/40 bg-bg-base/30 px-6 py-4">
+            <p className="text-xs font-bold uppercase tracking-widest text-text-muted/80 mb-3">
+              Lesionados
+            </p>
+            <div className="flex items-center gap-2 bg-bg-base/60 border border-border/40 rounded-full px-1 py-0.5">
+              <button
+                type="button"
+                onClick={() => lesionadosFields.length > 0 && removeLesionado(lesionadosFields.length - 1)}
+                className="w-6 h-6 rounded-full border border-accent/60 bg-accent/10 flex items-center justify-center text-base leading-none font-light text-accent hover:bg-accent hover:text-bg-base transition-all duration-150"
+              >−</button>
+              <span className="min-w-[1.25rem] text-center text-sm font-semibold text-text-primary tabular-nums">
+                {lesionadosFields.length}
+              </span>
+              <button
+                type="button"
+                onClick={() => appendLesionado({ identificacion: '', gravedad: undefined, infoAdicional: '' })}
+                className="w-6 h-6 rounded-full border border-accent/60 bg-accent/10 flex items-center justify-center text-base leading-none font-light text-accent hover:bg-accent hover:text-bg-base transition-all duration-150"
+              >+</button>
+            </div>
+          </div>
+
+          {/* Fallecidos */}
+          <div className="inline-flex flex-col items-center rounded-lg border border-border/40 bg-bg-base/30 px-6 py-4">
+            <p className="text-xs font-bold uppercase tracking-widest text-text-muted/80 mb-3">
+              Fallecidos
+            </p>
+            <div className="flex items-center gap-2 bg-bg-base/60 border border-border/40 rounded-full px-1 py-0.5">
+              <button
+                type="button"
+                onClick={() => fallecidosFields.length > 0 && removeFallecido(fallecidosFields.length - 1)}
+                className="w-6 h-6 rounded-full border border-accent/60 bg-accent/10 flex items-center justify-center text-base leading-none font-light text-accent hover:bg-accent hover:text-bg-base transition-all duration-150"
+              >−</button>
+              <span className="min-w-[1.25rem] text-center text-sm font-semibold text-text-primary tabular-nums">
+                {fallecidosFields.length}
+              </span>
+              <button
+                type="button"
+                onClick={() => appendFallecido({ identificacion: '', infoAdicional: '' })}
+                className="w-6 h-6 rounded-full border border-accent/60 bg-accent/10 flex items-center justify-center text-base leading-none font-light text-accent hover:bg-accent hover:text-bg-base transition-all duration-150"
+              >+</button>
+            </div>
+          </div>
+        </div>
+
+        {/* Cards lesionados */}
+        {lesionadosFields.length > 0 && (
+          <div className="flex flex-col gap-2 mb-3">
+            {lesionadosFields.map((field, idx) => (
+              <div key={field.id} className="rounded-lg border border-border/40 bg-bg-base/30 p-3 flex flex-col gap-2">
+                <div className="flex items-center justify-between">
+                  <p className="text-xs font-bold uppercase tracking-widest text-accent/70">
+                    Lesionado {idx + 1}
+                  </p>
+                  <button type="button" onClick={() => removeLesionado(idx)} className="text-xs text-text-muted hover:text-red-400 transition-colors">✕</button>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <CadInput
+                    placeholder="Identificación del Lesionado"
+                    {...register(`lesionados.${idx}.identificacion`)}
+                  />
+                  <CadSelect {...register(`lesionados.${idx}.gravedad`)}>
+                    <option value="">Gravedad</option>
+                    <option value="leve">Leve</option>
+                    <option value="moderado">Moderado</option>
+                    <option value="grave">Grave</option>
+                    <option value="critico">Crítico</option>
+                  </CadSelect>
+                </div>
+                <CadInput
+                  placeholder="Info Adicional..."
+                  {...register(`lesionados.${idx}.infoAdicional`)}
+                />
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Cards fallecidos */}
+        {fallecidosFields.length > 0 && (
+          <div className="flex flex-col gap-2">
+            {fallecidosFields.map((field, idx) => (
+              <div key={field.id} className="rounded-lg border border-border/40 bg-bg-base/30 p-3 flex flex-col gap-2">
+                <div className="flex items-center justify-between">
+                  <p className="text-xs font-bold uppercase tracking-widest text-accent/70">
+                    Fallecido {idx + 1}
+                  </p>
+                  <button type="button" onClick={() => removeFallecido(idx)} className="text-xs text-text-muted hover:text-red-400 transition-colors">✕</button>
+                </div>
+                <CadInput
+                  placeholder="Identificación del Fallecido"
+                  {...register(`fallecidos.${idx}.identificacion`)}
+                />
+                <CadInput
+                  placeholder="Info Adicional..."
+                  {...register(`fallecidos.${idx}.infoAdicional`)}
+                />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* ── Medios y auditoría ── */}

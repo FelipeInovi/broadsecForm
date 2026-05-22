@@ -77,6 +77,22 @@ const partesInvolucradas = z.object({
   involucrados: z.array(grupoInvolucradoSchema).optional(),
 })
 
+const lesionadoSchema = z.object({
+  identificacion: z.string().optional(),
+  gravedad: z.enum(['leve', 'moderado', 'grave', 'critico']).optional(),
+  infoAdicional: z.string().optional(),
+})
+
+const fallecidoSchema = z.object({
+  identificacion: z.string().optional(),
+  infoAdicional: z.string().optional(),
+})
+
+const victimasSchema = z.object({
+  lesionados: z.array(lesionadoSchema).optional(),
+  fallecidos: z.array(fallecidoSchema).optional(),
+})
+
 const mediaAuditoria = z.object({
   enlaceGrabacion: z.string().url('URL inválida').optional().or(z.literal('')),
   enlaceCamaraEscena: z
@@ -88,7 +104,7 @@ const mediaAuditoria = z.object({
   idDespachador: z.string().min(1, 'ID despachador requerido'),
 })
 
-export const paso3Schema = partesInvolucradas.merge(mediaAuditoria)
+export const paso3Schema = partesInvolucradas.merge(victimasSchema).merge(mediaAuditoria)
 
 // ─── Schema completo ───────────────────────────────────────────────────────
 

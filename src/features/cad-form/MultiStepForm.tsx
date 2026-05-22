@@ -51,6 +51,8 @@ export function MultiStepForm() {
       tiempoEstimadoLlegada: '2026-05-22T10:45',
       asignacionesAdicionales: [],
       esMutualAid: false,
+      lesionados: [],
+      fallecidos: [],
     },
   })
 
